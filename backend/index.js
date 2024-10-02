@@ -4,6 +4,11 @@ const bcrypt = require("bcryptjs");     // used to encrypt the password
 const jwt = require("jsonwebtoken");    // used to create and verify JWT tokens
 require("dotenv").config();
 
+/*
+    How to run
+    node index.js
+*/
+
 // Create an Express application
 const app = express();
 
