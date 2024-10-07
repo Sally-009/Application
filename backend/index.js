@@ -2,11 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");     // used to encrypt the password
 const jwt = require("jsonwebtoken");    // used to create and verify JWT tokens
+const cors = require("cors");          // used to allow cross-origin requests
 require("dotenv").config();
 
 /*
     How to run
-    node index.js
+    nodemon index.js
 */
 
 // Create an Express application
@@ -15,10 +16,15 @@ const app = express();
 // Middleware to parse JSON requests
 app.use(express.json());
 
+// Middleware to allow cross-origin requests
+app.use(cors());
+
 // User model schema
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  firstName: { type: String },
+  lastName: { type: String },
 });
 
 const User = mongoose.model("User", userSchema);
