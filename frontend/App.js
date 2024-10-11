@@ -7,6 +7,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 /* 
     How to run?
     npm start
+
+    Troubleshooting:
+    Server connection error: Check LoginScreen.js for the correct IP address.
+    Currently set to the IP address of "my house"
 */
 
 // Import your screens
