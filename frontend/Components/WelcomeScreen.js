@@ -1,8 +1,7 @@
 // WelcomeScreen.js
 import React from "react";
-import { SafeAreaView, Text, Button, StyleSheet } from "react-native";
+import { SafeAreaView, Text, Button, StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View } from "react-native-web";
 
 export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
   const handleLogout = async () => {
@@ -59,3 +58,4 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
