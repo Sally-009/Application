@@ -47,16 +47,16 @@ export default function App() {
       <Stack.Navigator>
         {isLoggedIn ? (
           // If logged in, show the Welcome screen
-          <> {/* Fragment */}
+          <React.Fragment>
             <Stack.Screen name="Welcome" options={{ headerShown: false }}>
-              {props => <WelcomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+              { props => <WelcomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
             </Stack.Screen>
 
             {/* Test screen */}
             <Stack.Screen name="TestScreen" options={{headerShown: false}}>
               { props => <TestScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
             </Stack.Screen>
-          </>
+          </React.Fragment>
 
         ) : (
           // Not logged in, show the Login screen
