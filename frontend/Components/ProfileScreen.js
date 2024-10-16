@@ -1,13 +1,10 @@
 import React from "react";
 import { SafeAreaView, Text, Button, StyleSheet, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-
 
 export default function ProfileScreen({ navigation, setIsLoggedIn }) {
     
-    // show text
+    // show some text
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.headerText}>This is Profile Page</Text>

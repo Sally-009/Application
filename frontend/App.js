@@ -6,12 +6,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./Components/LoginScreen";
 import WelcomeScreen from "./Components/WelcomeScreen";
 import ProfileScreen from "./Components/ProfileScreen";
-
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function App() {
+  
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Initialize as null
+  const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
 
   useEffect(() => {
@@ -36,7 +36,22 @@ export default function App() {
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              let iconName;
+
+              if (route.name === "Home") {
+                iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "Profile") {
+                iconName = focused ? "person" : "person-outline";
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            TabBarActiveTintColor: "tomato",
+            TabBarInactiveTintColor: "gray",
+          })}>
           <Tab.Screen name="Home" component={WelcomeScreen} />
           <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>

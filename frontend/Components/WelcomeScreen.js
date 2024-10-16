@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     width: "50%",
     marginVertical: 15,
-    alignSelf: "center", // 中央に配置
+    alignSelf: "center",
   },
 });
 
