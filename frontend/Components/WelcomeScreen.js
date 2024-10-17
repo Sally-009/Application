@@ -1,5 +1,5 @@
 // WelcomeScreen.js
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, Text, Button, StyleSheet, Image, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -10,10 +10,8 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
     setIsLoggedIn(false);
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+    // navigate to login screen
+    navigation.navigate("Login");
   };
 
   return (
