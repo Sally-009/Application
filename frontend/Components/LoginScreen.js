@@ -9,6 +9,12 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+/*
+  IP addresses:
+  my house: 192.168.1.145
+  classroom: 10.200.103.66
+*/
+
 export default function LoginScreen({ navigation, setIsLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +68,7 @@ export default function LoginScreen({ navigation, setIsLoggedIn }) {
             setIsLoggedIn(true);
             navigation.reset({
               index: 0,
-              routes: [{ name: "Welcome" }],
+              routes: [{ name: "Home" }],
             });
           }
         } else {
@@ -161,8 +167,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    width: "75%", // 75% of the width
-    marginBottom: 15, // spacing between buttons
+    width: "75%",
+    marginBottom: 15,
   },
   message: {
     marginTop: 20,
