@@ -3,10 +3,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+// Import screens
 import LoginScreen from "./Components/LoginScreen";
 import WelcomeScreen from "./Components/WelcomeScreen";
 import ProfileScreen from "./Components/ProfileScreen";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function App() {
   
@@ -37,23 +39,30 @@ export default function App() {
     <NavigationContainer>
       {isLoggedIn ? (
         <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-              let iconName;
-
-              if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person" : "person-outline";
-              }
-
-              return <Ionicons name={iconName} size={size} color={color} />;
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              const icons = {
+                Home: focused ? "home" : "home-outline",
+                Profile: focused ? "person" : "person-outline",
+              };
+              return (
+                <Ionicons name={icons[route.name]} size={size} color={color} />
+              );
             },
             TabBarActiveTintColor: "tomato",
             TabBarInactiveTintColor: "gray",
-          })}>
-          <Tab.Screen name="Home" component={WelcomeScreen} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
+          })}
+        >
+          <Tab.Screen name="Home">
+            {(props) => (
+              <WelcomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Profile">
+            {(props) => (
+              <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+            )}
+          </Tab.Screen>
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>

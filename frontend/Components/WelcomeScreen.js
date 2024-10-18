@@ -1,4 +1,3 @@
-// WelcomeScreen.js
 import React from "react";
 import { SafeAreaView, Text, Button, StyleSheet, Image, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,17 +9,21 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
     setIsLoggedIn(false);
+    // navigate to login screen
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Login' }],
-    });
+      routes: [{ name: "Login" }]
+    })
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={imageSource} style={{ width: 200, height: 200, alignSelf: "center" }} />
+      <Image
+        source={imageSource}
+        style={{ width: 200, height: 200, alignSelf: "center" }}
+      />
       <Text style={styles.headerText}>Welcome!</Text>
-      
+
       <View style={styles.buttonContainer}>
         <Button title="Logout" onPress={handleLogout} />
       </View>
