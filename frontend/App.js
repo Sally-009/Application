@@ -10,11 +10,13 @@ import LoginScreen from "./Components/LoginScreen";
 import WelcomeScreen from "./Components/WelcomeScreen";
 import ProfileScreen from "./Components/ProfileScreen";
 
+// Navigation setup (Global)
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Initialize as null
-  const Stack = createNativeStackNavigator();
-  const Tab = createBottomTabNavigator();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
