@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "./Styles/styles";
 
 /*
   IP addresses:
@@ -141,38 +142,3 @@ export default function LoginScreen({ navigation, setIsLoggedIn }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
-  },
-  headerText: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    width: "80%",
-    borderColor: "gray",
-    borderWidth: 1,
-    margin: "auto",
-    marginBottom: 12,
-    paddingLeft: 8,
-  },
-  buttonContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  button: {
-    width: "75%",
-    marginBottom: 15,
-  },
-  message: {
-    marginTop: 20,
-    color: "green",
-    textAlign: "center",
-  },
-});

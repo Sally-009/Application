@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, Text, Button, StyleSheet, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "./Styles/styles";
 
 export default function ProfileScreen({ navigation, setIsLoggedIn }) {
     
@@ -12,18 +13,3 @@ export default function ProfileScreen({ navigation, setIsLoggedIn }) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        padding: 16,
-    },
-    headerText: {
-        fontSize: 24,
-        marginBottom: 20,
-        textAlign: "center",
-    },
-    button: {
-        marginVertical: 15,
-    },
-});
