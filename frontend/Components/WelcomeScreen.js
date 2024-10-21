@@ -32,7 +32,7 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
   const addItem = async (newItem) => {
     try {
       const token = await AsyncStorage.getItem("token");
-      const response = await fetch("http://192.168.1.145/items", {
+      const response = await fetch("http://localhost:5000/items", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
       setLoading(true);
       try {
         const token = await AsyncStorage.getItem("token");
-        const response = await fetch("http://192.168.1.145/items", {
+        const response = await fetch("http://localhost:5000/items", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
