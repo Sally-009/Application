@@ -8,6 +8,13 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styles from "./Styles/styles";
+
+/*
+  IP addresses:
+  my house: 192.168.1.145
+  classroom: 10.200.103.66
+*/
 
 export default function LoginScreen({ navigation, setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -36,8 +43,8 @@ export default function LoginScreen({ navigation, setIsLoggedIn }) {
     }
 
     const url = isLogin
-      ? "http://192.168.1.145:5000/users/login"
-      : "http://192.168.1.145:5000/users/register";
+      ? "http://localhost:5000/users/login"
+      : "http://localhost:5000/users/register";
 
     const body = isLogin
       ? { username: email, password }
@@ -62,7 +69,7 @@ export default function LoginScreen({ navigation, setIsLoggedIn }) {
             setIsLoggedIn(true);
             navigation.reset({
               index: 0,
-              routes: [{ name: "Welcome" }],
+              routes: [{ name: "Home" }],
             });
           }
         } else {
@@ -135,38 +142,3 @@ export default function LoginScreen({ navigation, setIsLoggedIn }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
-  },
-  headerText: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    width: "80%",
-    borderColor: "gray",
-    borderWidth: 1,
-    margin: "auto",
-    marginBottom: 12,
-    paddingLeft: 8,
-  },
-  buttonContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  button: {
-    width: "75%", // 75% of the width
-    marginBottom: 15, // spacing between buttons
-  },
-  message: {
-    marginTop: 20,
-    color: "green",
-    textAlign: "center",
-  },
-});

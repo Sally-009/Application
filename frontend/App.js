@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-/* 
-    How to run?
-    npm start
-
-    Troubleshooting:
-    Server connection error: Check LoginScreen.js for the correct IP address.
-    Currently set to the IP address of "my house"
-*/
-
-// Import your screens
+// Import screens
 import LoginScreen from "./Components/LoginScreen";
 import WelcomeScreen from "./Components/WelcomeScreen";
-import TestScreen from "./Components/TestScreen";
+import ProfileScreen from "./Components/ProfileScreen";
 
+// Navigation setup (Global)
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
+  
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Initialize as null
 
   useEffect(() => {
@@ -44,29 +39,42 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {isLoggedIn ? (
-          // If logged in, show the Welcome screen
-          <React.Fragment>
-            <Stack.Screen name="Welcome" options={{ headerShown: false }}>
-              { props => <WelcomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
-            </Stack.Screen>
-
-            {/* Test screen */}
-            <Stack.Screen name="TestScreen" options={{headerShown: false}}>
-              { props => <TestScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
-            </Stack.Screen>
-          </React.Fragment>
-
-        ) : (
-          // Not logged in, show the Login screen
+      {isLoggedIn ? (
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              const icons = {
+                Home: focused ? "home" : "home-outline",
+                Profile: focused ? "person" : "person-outline",
+              };
+              return (
+                <Ionicons name={icons[route.name]} size={size} color={color} />
+              );
+            },
+            TabBarActiveTintColor: "tomato",
+            TabBarInactiveTintColor: "gray",
+          })}
+        >
+          <Tab.Screen name="Home">
+            {(props) => (
+              <WelcomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Profile">
+            {(props) => (
+              <ProfileScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+            )}
+          </Tab.Screen>
+        </Tab.Navigator>
+      ) : (
+        <Stack.Navigator>
           <Stack.Screen name="Login" options={{ headerShown: false }}>
             {(props) => (
               <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />
             )}
           </Stack.Screen>
-        )}
-      </Stack.Navigator>
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 }
