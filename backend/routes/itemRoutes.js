@@ -35,4 +35,47 @@ router.get("/items", authMiddleware, async (req, res) => {
   }
 });
 
+// Put /items/:id - Update an item
+router.put("/items/:id", authMiddleware, async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    const item = await Item.findOne({ _id: req.params.id, user: req.user.id });
+
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    item.title = title;
+    item.description = description;
+
+    const updatedItem = await item.save();
+    res.json(updatedItem);
+
+    console.log("Item updated from to", updatedItem);
+
+  } catch (error) {
+    console.error("Error updating item:", error);
+    res.status(500).json({ error: "Failed to update item" });
+  }
+});
+
+// DELETE /items/:id - Delete an item
+router.delete("/items/:id", authMiddleware, async (req, res) => {
+  try {
+    const item = await Item.findOne({ _id: req.params.id, user: req.user.id });
+
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    await item.deleteOne({ _id: req.params.id });
+    res.json({ message: "Item deleted Successfully" });
+    
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    res.status(500).json({ error: "Failed to delete item" });
+  }
+});
+
 module.exports = router;
