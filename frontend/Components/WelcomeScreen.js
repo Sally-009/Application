@@ -6,13 +6,17 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  StyleSheet,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import AddItemModal from "../Components/AddItemModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EditItemModal from "../Components/EditItemModal";
+import styles from "./Styles/styles";
 
 export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -88,6 +92,77 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
     fetchItems();
   }, []);
 
+  // Function to handle edit button press
+  const handleEditPress = (item) => {
+    setSelectedItem(item);
+    setIsEditModalVisible(true);
+  };
+
+  // Function to handle delete button press
+  const handleDeletePress = async (item) => {
+    const itemId = item._id;
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      console.log("itemId:", itemId);
+
+      const response = await fetch(`http://localhost:5000/items/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error("server error", errorResponse);
+        throw new Error(errorResponse.message || "Failed to delete item");
+      }
+
+      setData((prevData) => prevData.filter((item) => item._id !== itemId));
+      alert("Item deleted successfully");
+    } catch (error) {
+      console.error("Error deleting item", error);
+      alert("Failed to delete item");
+    }
+  };
+
+  // save edited item
+  const saveEditedItem = async (editedItem) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:5000/items/${editedItem._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: editedItem.title,
+            description: editedItem.description,
+          }),
+        }
+      );
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error("server error", errorResponse);
+        throw new Error(errorResponse.message || "Failed to update item");
+      }
+
+      const savedItem = await response.json();
+      setData((prevData) =>
+        prevData.map((item) => (item._id === editedItem._id ? savedItem : item))
+      );
+    } catch (error) {
+      console.error("Error updating item", error);
+      alert("Failed to update item");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -108,10 +183,26 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
                 <Text style={styles.description}>
                   {item.description || "No description"}
                 </Text>
+                <View style={styles.itemActions}>
+                  <TouchableOpacity onPress={() => handleEditPress(item)}>
+                    <Text>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleDeletePress(item)}>
+                    <Text>Delete</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
           />
           <AddItemModal onAddItem={addItem} />
+          {selectedItem && (
+            <EditItemModal
+              item={selectedItem}
+              isVisible={isEditModalVisible}
+              onClose={() => setIsEditModalVisible(false)}
+              onSave={saveEditedItem}
+            />
+            )}
         </View>
       ) : (
         <View>
@@ -126,22 +217,3 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
-  },
-  headerText: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  buttonContainer: {
-    maxWidth: 300,
-    width: "50%",
-    marginVertical: 15,
-    alignSelf: "center",
-  },
-});
