@@ -75,7 +75,6 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
         if (!response.ok) {
           const errorResponse = await response.json();
           console.error("Server Error:", errorResponse);
-          console.log("Server Error:", errorResponse);
           throw new Error(errorResponse.message || "Failed to fetch items");
         }
 

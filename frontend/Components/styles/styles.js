@@ -17,7 +17,8 @@ export default StyleSheet.create({
     height: 40,
     width: "80%",
     borderColor: "gray",
-    borderWidth: 1,
+    margin: "auto",
+
     margin: "auto",
     marginBottom: 12,
     paddingLeft: 8,
@@ -34,9 +35,8 @@ export default StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 10,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
+    width: "60%",
+    margin: "auto",
     height: 80,
   },
   item: {
@@ -63,4 +63,8 @@ export default StyleSheet.create({
     fontSize: 14,
     color: "#666",
   },
+  profileText: {
+    fontSize: 20,
+    margin: 10,
+  }
 });
