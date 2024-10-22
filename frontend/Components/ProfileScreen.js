@@ -3,9 +3,11 @@ import { SafeAreaView, Text, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./Styles/styles";
 import { View } from "react-native-web";
+import EditUserInfoModal from "./EditUserInfoModal";
 
 export default function ProfileScreen({ navigation, setIsLoggedIn }) {
     
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [userInfo, setUserInfo] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -43,8 +45,11 @@ export default function ProfileScreen({ navigation, setIsLoggedIn }) {
 
     // Function to handle edit button
     const handleEdit = () => {
-        
+        setIsEditModalVisible(true);
     }
+
+    // Save the updated user information
+    const saveUserInfo = () => {console.log("User Info Saved")};
 
     // show some text
     return (
@@ -59,6 +64,13 @@ export default function ProfileScreen({ navigation, setIsLoggedIn }) {
         <View style={styles.buttonContainer}>
         <Button style={styles.button} title="Edit" onPress={handleEdit} />
         </View>
+        {/* Modal to edit user information */}
+        <EditUserInfoModal
+            userInfo={userInfo}
+            isVisible={isEditModalVisible}
+            onClose={() => setIsEditModalVisible(false)}
+            onSave={saveUserInfo}
+        />
       </SafeAreaView>
     );
 }
