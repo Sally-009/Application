@@ -86,4 +86,34 @@ res.status(500).json({ error: "Failed to retrieve user" });
 }
 });
 
+// Update user details
+router.put("/user/:id", authMiddleware, async (req, res) => {
+try {
+  const { firstname, lastname, username } = req.body;
+
+  // Find user by id
+  const user = await User.findById({_id:req.params.id});
+  
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  // Update user details
+  user.firstname = firstname;
+  user.lastname = lastname;
+  user.username = username;
+
+  // Save updated user
+  const updatedUser = await user.save();
+  res.json(updatedUser);
+
+  console.log("User updated from to", updatedUser);
+
+} catch (error) { 
+  console.error("Error updating user:", error);
+  res.status(500).json({ error: "Failed to update user" });
+}
+}
+);
+
 module.exports = router;

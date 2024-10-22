@@ -49,7 +49,31 @@ export default function ProfileScreen({ navigation, setIsLoggedIn }) {
     }
 
     // Save the updated user information
-    const saveUserInfo = () => {console.log("User Info Saved")};
+    const saveUserInfo = async (updatedUserInfo) => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const response = await fetch(`http://localhost:5000/users/user/${userInfo._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedUserInfo),
+            });
+
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                console.error("Server Error:", errorResponse);
+                throw new Error(errorResponse.message || "Failed to update user information");
+            }
+
+            const user = await response.json();
+            setUserInfo(user);
+        } catch (error) {
+            console.error("Error updating user information:", error);
+            alert(error.message);
+        }
+    }
 
     // show some text
     return (
