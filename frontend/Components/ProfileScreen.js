@@ -1,46 +1,22 @@
 import React, {useState, useEffect } from "react";
-import { SafeAreaView, Text, Button } from "react-native";
+import { SafeAreaView, Text, Button, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./Styles/styles";
 import { View } from "react-native-web";
 import EditUserInfoModal from "./EditUserInfoModal";
+import fetchUserInfo from "./Functions/FetchUserInfo";
 
 export default function ProfileScreen({ navigation, setIsLoggedIn }) {
     
+    const imageSource = require("../assets/person.png");
+
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [userInfo, setUserInfo] = useState([]);
     const [loading, setLoading] = useState(false);
 
     // Fetch user information
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            setLoading(true);
-            try {
-                const token = await AsyncStorage.getItem("token");
-                const response = await fetch("http://localhost:5000/users/user", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    const errorResponse = await response.json();
-                    console.error("Server Error:", errorResponse);
-                    throw new Error(errorResponse.message || "Failed to fetch user information");
-                }
-
-                const user = await response.json();
-                setUserInfo(user);
-            } catch (error) {
-                console.error("Error fetching user information:", error);
-                alert(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserInfo();
+        fetchUserInfo(setLoading, setUserInfo);
     }, []);
 
     // Function to handle edit button
@@ -75,10 +51,10 @@ export default function ProfileScreen({ navigation, setIsLoggedIn }) {
         }
     }
 
-    // show some text
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.headerText}>Your Information</Text>
+        <Image source={imageSource} style={styles.profileImage} />
         <Text style={styles.profileText}>
           Name: {userInfo.firstname} {userInfo.lastname}
         </Text>

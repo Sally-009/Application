@@ -13,14 +13,21 @@ import AddItemModal from "../Components/AddItemModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EditItemModal from "../Components/EditItemModal";
 import styles from "./Styles/styles";
+import FetchUserInfo from "./Functions/FetchUserInfo";
 
 export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
 
   const imageSource = require("../assets/greeting.png");
+
+  // Fetch user information
+  useEffect(() => {
+    FetchUserInfo(setLoading, setUserInfo);
+  }, []);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
@@ -166,9 +173,9 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
     <SafeAreaView style={styles.container}>
       <Image
         source={imageSource}
-        style={{ width: 200, height: 200, alignSelf: "center" }}
+        style={styles.welcomeImage}
       />
-      <Text style={styles.headerText}>Welcome!</Text>
+      <Text style={styles.headerText}>Welcome, {userInfo.firstname}!</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : data.length ? (
@@ -201,7 +208,7 @@ export default function WelcomeScreen({ navigation, setIsLoggedIn }) {
               onClose={() => setIsEditModalVisible(false)}
               onSave={saveEditedItem}
             />
-            )}
+          )}
         </View>
       ) : (
         <View>

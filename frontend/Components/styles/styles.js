@@ -66,5 +66,16 @@ export default StyleSheet.create({
   profileText: {
     fontSize: 20,
     margin: 10,
-  }
+    marginHorizontal: 40,
+  },
+  welcomeImage: {
+    width: 200,
+    height: 200,
+    alignSelf: "center",
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignSelf: "center",},
 });
